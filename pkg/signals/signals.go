@@ -9,7 +9,7 @@ import (
 // onlyOneSignalHandler is a channel that is closed the first time we invoke
 // trapSignals(). If trapSignals() is ever invoked again the application will
 // panic trying to close a channel that is already closed. This is to ensure
-// we're only trapping the singals in one place.
+// we're only trapping the signals in one place.
 var onlyOneSignalHandler = make(chan struct{})
 
 // Setup registers for SIGTERM and SIGINT. A channel is returned
