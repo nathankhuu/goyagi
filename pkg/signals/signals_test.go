@@ -1,4 +1,3 @@
-// pkg/signals/signals_test.go
 package signals
 
 import (

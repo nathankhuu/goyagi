@@ -1,4 +1,3 @@
-// pkg/server/server_test.go
 package server
 
 import (

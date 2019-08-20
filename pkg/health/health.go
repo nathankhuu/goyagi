@@ -1,4 +1,3 @@
-// pkg/health/health.go
 package health
 
 import (
