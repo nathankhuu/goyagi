@@ -14,10 +14,17 @@ type handler struct {
 }
 
 func (h *handler) listHandler(c echo.Context) error {
+	params := listParams{}
+	if err := c.Bind(&params); err != nil {
+		return err
+	}
+
 	var movies []*model.Movie
 
 	err := h.app.DB.
 		Model(&movies).
+		Limit(params.Limit).
+		Offset(params.Offset).
 		Order("id DESC").
 		Select()
 	if err != nil {
@@ -37,6 +44,27 @@ func (h *handler) retrieveHandler(c echo.Context) error {
 		if err == pg.ErrNoRows {
 			return echo.NewHTTPError(http.StatusNotFound, "movie not found")
 		}
+		return err
+	}
+
+	return c.JSON(http.StatusOK, movie)
+}
+
+func (h *handler) createHandler(c echo.Context) error {
+	// params is a struct that will have our payload bound and validated against
+	params := createParams{}
+	if err := c.Bind(&params); err != nil {
+		// if there is an error binding or validating the payload, return early with an error
+		return err
+	}
+
+	movie := model.Movie{
+		Title:       params.Title,
+		ReleaseDate: params.ReleaseDate,
+	}
+
+	_, err := h.app.DB.Model(&movie).Insert()
+	if err != nil {
 		return err
 	}
 

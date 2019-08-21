@@ -31,6 +31,25 @@ func TestListHandler(t *testing.T) {
 	})
 }
 
+func TestListHandlerWithLimit(t *testing.T) {
+	h := newHandler(t)
+
+	t.Run("lists movies with limit on success", func(tt *testing.T) {
+		c, rr := newContext(tt, nil)
+		c.SetParamNames("limit")
+		c.SetParamValues("2")
+
+		err := h.listHandler(c)
+		assert.NoError(tt, err)
+		assert.Equal(tt, http.StatusOK, rr.Code)
+
+		var response []model.Movie
+		err = json.Unmarshal(rr.Body.Bytes(), &response)
+		require.NoError(tt, err)
+		assert.True(tt, len(response) == 2)
+	})
+}
+
 func TestRetrieveHandler(t *testing.T) {
 	h := newHandler(t)
 
@@ -57,6 +76,25 @@ func TestRetrieveHandler(t *testing.T) {
 
 		err := h.retrieveHandler(c)
 		assert.Contains(tt, err.Error(), "movie not found")
+	})
+}
+
+func TestCreateHandler(t *testing.T) {
+	h := newHandler(t)
+
+	t.Run("creates movie on success", func(tt *testing.T) {
+		c, rr := newContext(tt, nil)
+		c.SetParamNames("title", "release_date")
+		c.SetParamValues("Test Post Movie", "2019-01-30T00:00:00.00Z")
+
+		err := h.createHandler(c)
+		assert.NoError(tt, err)
+		assert.Equal(tt, http.StatusOK, rr.Code)
+
+		var response model.Movie
+		err = json.Unmarshal(rr.Body.Bytes(), &response)
+		require.NoError(tt, err)
+		assert.Equal(tt, response.Title, "Test Post Movie")
 	})
 }
 
