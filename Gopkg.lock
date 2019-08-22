@@ -2,6 +2,14 @@
 
 
 [[projects]]
+  digest = "1:ed4582b92b69928dec6d82f78d1ad64863b89e631217bfdc5c63b3066a053eea"
+  name = "github.com/creasty/defaults"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "edf4f6a95a3223dfff4eff2c404103e756fef68d"
+  version = "v1.3.0"
+
+[[projects]]
   digest = "1:ffe9824d294da03b391f44e1ae8281281b4afc1bdaa9588c9097785e3af10cec"
   name = "github.com/davecgh/go-spew"
   packages = ["spew"]
@@ -222,7 +230,9 @@
   analyzer-name = "dep"
   analyzer-version = 1
   input-imports = [
+    "github.com/creasty/defaults",
     "github.com/go-pg/pg",
+    "github.com/go-pg/pg/orm",
     "github.com/labstack/echo",
     "github.com/lob/logger-go",
     "github.com/pkg/errors",
