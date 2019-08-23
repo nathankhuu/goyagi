@@ -65,8 +65,10 @@ func (h *handler) createHandler(c echo.Context) error {
 
 	_, err := h.app.DB.Model(&movie).Insert()
 	if err != nil {
+		insertTimer.End("result:error")
 		return err
 	}
+	insertTimer.End("result:success")
 
 	return c.JSON(http.StatusOK, movie)
 }
