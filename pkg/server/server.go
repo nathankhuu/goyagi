@@ -11,6 +11,7 @@ import (
 	"github.com/nathankhuu/goyagi/pkg/binder"
 	"github.com/nathankhuu/goyagi/pkg/errors"
 	"github.com/nathankhuu/goyagi/pkg/health"
+	"github.com/nathankhuu/goyagi/pkg/metrics"
 	"github.com/nathankhuu/goyagi/pkg/movies"
 	"github.com/nathankhuu/goyagi/pkg/recovery"
 	"github.com/nathankhuu/goyagi/pkg/signals"
@@ -24,6 +25,9 @@ func New(app application.App) *http.Server {
 
 	b := binder.New()
 	e.Binder = b
+
+	// Register our metrics middleware as our _first_ middlware
+	e.Use(metrics.Middleware(app.Metrics))
 
 	// Register the logger middleware after we set our custom binder
 	e.Use(logger.Middleware())
